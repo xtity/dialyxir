@@ -52,11 +52,15 @@ defmodule Mix.Tasks.Dialyzer.Plt do
   import Dialyxir.Helpers
 
   def run(_) do
-    if need_build? do
-      build_plt
-      if need_add?, do: add_plt
-    else
-      if need_add?, do: add_plt, else: puts "Nothing to do."
+    try do
+      if need_build? do
+        build_plt
+        if need_add?, do: add_plt
+      else
+        if need_add?, do: add_plt, else: puts "Nothing to do."
+      end
+    catch
+      x -> IO.puts "Got #{x}"
     end
   end
 
@@ -67,7 +71,7 @@ defmodule Mix.Tasks.Dialyzer.Plt do
 
   defp build_plt do
     puts "Starting PLT Core Build ... this will take awhile"
-    args = List.flatten ["--output_plt", "#{plt_file}", "--build_plt", include_pa, "--apps", include_apps, "-r", ex_lib_path]
+    args = List.flatten ["--output_plt", "#{plt_file}", "--build_plt", include_pa, "--apps", include_apps, "-r", ex_lib_path, "-DDEBUG"]
     puts "dialyzer " <> Enum.join(args, " ")
     {ret, _} = cmd("dialyzer", args, [])
     puts ret
