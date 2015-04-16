@@ -71,7 +71,7 @@ defmodule Mix.Tasks.Dialyzer.Plt do
 
   defp build_plt do
     puts "Starting PLT Core Build ... this will take awhile"
-    args = List.flatten ["-Werror_handling", "--output_plt", "#{plt_file}", "--build_plt", include_pa, "--apps", include_apps, "-r", ex_lib_path]
+    args = List.flatten ["-Wunmatched_returns","-Werror_handling","-Wrace_conditions", "-Wno_opaque", "--output_plt", "#{plt_file}", "--build_plt", include_pa, "--apps", include_apps, "-r", ex_lib_path]
     puts "dialyzer " <> Enum.join(args, " ")
     {ret, _} = cmd("dialyzer", args, [])
     puts ret
