@@ -60,7 +60,7 @@ defmodule Mix.Tasks.Dialyzer.Plt do
         if need_add?, do: add_plt, else: puts "Nothing to do."
       end
     catch
-      x -> IO.puts "Got #{x}"
+      x -> puts "Got #{x}"
     end
   end
 
@@ -131,9 +131,9 @@ defmodule Mix.Tasks.Dialyzer.Plt do
 
   defp core_plt_contains?(app, plt_file) do
     app = to_char_list(app)
-    IO.puts app
+    puts app
     plt_file = to_char_list(plt_file)
-    IO.puts plt_file
+    puts plt_file
     :dialyzer.plt_info(plt_file)
     |> elem(1) |> Keyword.get(:files)
     |> Enum.find(fn(s) ->
